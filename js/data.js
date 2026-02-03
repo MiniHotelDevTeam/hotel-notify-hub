@@ -480,7 +480,7 @@ async function addHotelServiceAsync(hotelId, serviceCode, serviceData = {}) {
     send_by_whatsapp: serviceData.whatsapp || false,
   };
 
-  // Agregar statusIN, URL, configuración de campos y plantillas para el servicio SELF_IN
+  // Agregar statusIN, URL, primera notificación antes de llegada, configuración de campos y plantillas para el servicio SELF_IN
   if (serviceCode === 'SELF_IN') {
     if (serviceData.hasOwnProperty('status_in')) {
       webhookData.status_in = serviceData.status_in;
@@ -489,6 +489,14 @@ async function addHotelServiceAsync(hotelId, serviceCode, serviceData = {}) {
     if (serviceData.hasOwnProperty('self_in_url')) {
       webhookData.self_in_url = serviceData.self_in_url;
       console.log('Agregando URL para SELF_IN:', serviceData.self_in_url);
+    }
+    if (serviceData.hasOwnProperty('first_notification_before_arrival')) {
+      webhookData.first_notification_before_arrival = serviceData.first_notification_before_arrival;
+      console.log('Agregando primera notificación antes de llegada para SELF_IN:', serviceData.first_notification_before_arrival);
+    }
+    if (serviceData.hasOwnProperty('self_in_default_language')) {
+      webhookData.self_in_default_language = serviceData.self_in_default_language;
+      console.log('Agregando idioma predefinido para SELF_IN:', serviceData.self_in_default_language);
     }
     
     // Agregar configuración de campos del formulario
@@ -608,7 +616,7 @@ async function updateHotelServiceAsync(hotelId, serviceId, serviceData = {}) {
     send_by_whatsapp: serviceData.whatsapp || false,
   };
 
-  // Agregar statusIN, URL, configuración de campos y plantillas para el servicio SELF_IN si están presentes
+  // Agregar statusIN, URL, primera notificación antes de llegada, configuración de campos y plantillas para el servicio SELF_IN si están presentes
   if (serviceData.hasOwnProperty('status_in')) {
     webhookData.status_in = serviceData.status_in;
     console.log('Actualizando statusIN para SELF_IN:', serviceData.status_in);
@@ -616,6 +624,14 @@ async function updateHotelServiceAsync(hotelId, serviceId, serviceData = {}) {
   if (serviceData.hasOwnProperty('self_in_url')) {
     webhookData.self_in_url = serviceData.self_in_url;
     console.log('Actualizando URL para SELF_IN:', serviceData.self_in_url);
+  }
+  if (serviceData.hasOwnProperty('first_notification_before_arrival')) {
+    webhookData.first_notification_before_arrival = serviceData.first_notification_before_arrival;
+    console.log('Actualizando primera notificación antes de llegada para SELF_IN:', serviceData.first_notification_before_arrival);
+  }
+  if (serviceData.hasOwnProperty('self_in_default_language')) {
+    webhookData.self_in_default_language = serviceData.self_in_default_language;
+    console.log('Actualizando idioma predefinido para SELF_IN:', serviceData.self_in_default_language);
   }
   
   // Agregar configuración de campos del formulario si están presentes

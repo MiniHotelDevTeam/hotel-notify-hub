@@ -883,6 +883,13 @@ async function viewHotelServices(id) {
                       </span>
                     </div>
                   ` : ''}
+                  ${service.first_notification_before_arrival ? `
+                    <div class="service-first-notification">
+                      <span class="first-notification-badge">
+                        📬 ${window.i18n ? window.i18n.t('hotelServices.firstNotificationLabel') : 'Primera notificación:'} ${getFirstNotificationLabel(service.first_notification_before_arrival)}
+                      </span>
+                    </div>
+                  ` : ''}
                 </div>
               ` : ''}
             </div>
@@ -961,6 +968,18 @@ async function viewHotelServices(id) {
       </div>
     `;
   }
+}
+
+// Función auxiliar para obtener la etiqueta de "primera notificación antes de llegada"
+function getFirstNotificationLabel(value) {
+  const keyMap = {
+    '60': 'addService.firstNotification2Months',
+    '30': 'addService.firstNotification1Month',
+    '14': 'addService.firstNotification2Weeks',
+    '7': 'addService.firstNotification1Week'
+  };
+  const key = keyMap[value];
+  return window.i18n && key ? window.i18n.t(key) : value;
 }
 
 // Función auxiliar para obtener el ícono del canal
@@ -1175,10 +1194,18 @@ async function handleAddServiceSubmit(e) {
     whatsapp: formData.send_by_whatsapp
   };
 
-  // Agregar statusIN, URL y configuración de campos solo para el servicio SELF_IN
-  if (formData.service_code === 'SELF_IN') {
+  // Al EDITAR: agregar statusIN, URL, primera notificación, idioma predefinido y campos solo para SELF_IN
+  if (editingServiceId && formData.service_code === 'SELF_IN') {
     serviceData.status_in = formData.status_in === 'true';
     serviceData.self_in_url = formData.self_in_url || '';
+    const firstNotificationSelect = document.getElementById('first-notification-before-arrival');
+    if (firstNotificationSelect) {
+      serviceData.first_notification_before_arrival = firstNotificationSelect.value || '60';
+    }
+    const defaultLanguageSelect = document.getElementById('self-in-default-language');
+    if (defaultLanguageSelect) {
+      serviceData.self_in_default_language = defaultLanguageSelect.value || 'en';
+    }
     
     // Agregar configuración de campos del formulario
     // Si la ubicación está marcada como requerida, todas las partes (país, estado, ciudad) son obligatorias
@@ -1413,19 +1440,23 @@ function handleServiceSelectionChange(e) {
   const selectedServiceCode = e.target.value;
   const selfInSection = document.getElementById('self-in-status-section');
   const selfInFieldsPanel = document.getElementById('self-in-fields-panel');
-  
-  if (selectedServiceCode === 'SELF_IN') {
+  const form = document.getElementById('add-service-form');
+  const isEditMode = form && form.dataset.serviceId;
+
+  // Solo mostrar configuración SELF_IN (status, URL, primera notificación, campos) cuando se EDITA un servicio
+  if (selectedServiceCode === 'SELF_IN' && isEditMode) {
     // Mostrar la sección de statusIN y el panel de campos para el servicio SELF_IN
     selfInSection.style.display = 'block';
     if (selfInFieldsPanel) {
       selfInFieldsPanel.style.display = 'block';
     }
-    
-    // Inicializar botones de ocultar/mostrar cuando se muestra el panel
     setTimeout(() => {
       initializeHideToggles();
     }, 100);
-    
+  } else if (selectedServiceCode === 'SELF_IN' && !isEditMode) {
+    // Al agregar: no mostrar sección SELF_IN, solo canales
+    if (selfInSection) selfInSection.style.display = 'none';
+    if (selfInFieldsPanel) selfInFieldsPanel.style.display = 'none';
   } else {
     // Ocultar la sección de statusIN y el panel de campos para otros servicios
     selfInSection.style.display = 'none';
@@ -1433,14 +1464,22 @@ function handleServiceSelectionChange(e) {
       selfInFieldsPanel.style.display = 'none';
     }
     
-    // Resetear valores de statusIN y URL
+    // Resetear valores de statusIN, URL, primera notificación e idioma predefinido
     const statusInFalse = document.getElementById('status-in-false');
     const selfInUrl = document.getElementById('self-in-url');
+    const firstNotificationSelect = document.getElementById('first-notification-before-arrival');
+    const defaultLanguageSelect = document.getElementById('self-in-default-language');
     if (statusInFalse) {
       statusInFalse.checked = true;
     }
     if (selfInUrl) {
       selfInUrl.value = '';
+    }
+    if (firstNotificationSelect) {
+      firstNotificationSelect.value = '60';
+    }
+    if (defaultLanguageSelect) {
+      defaultLanguageSelect.value = 'en';
     }
     
     // Resetear checkboxes de campos configurables
@@ -1483,11 +1522,19 @@ function resetAddServiceForm() {
   }
   const statusInFalse = document.getElementById('status-in-false');
   const selfInUrl = document.getElementById('self-in-url');
+  const firstNotificationSelect = document.getElementById('first-notification-before-arrival');
+  const defaultLanguageSelect = document.getElementById('self-in-default-language');
   if (statusInFalse) {
     statusInFalse.checked = true;
   }
   if (selfInUrl) {
     selfInUrl.value = '';
+  }
+  if (firstNotificationSelect) {
+    firstNotificationSelect.value = '60';
+  }
+  if (defaultLanguageSelect) {
+    defaultLanguageSelect.value = 'en';
   }
   
   // Resetear configuración de campos
@@ -1560,6 +1607,22 @@ async function editHotelService(hotelId, serviceId, serviceCode) {
       const selfInUrl = document.getElementById('self-in-url');
       if (selfInUrl) {
         selfInUrl.value = service.self_in_url || '';
+      }
+      
+      // Configurar primera notificación antes de llegada
+      const firstNotificationSelect = document.getElementById('first-notification-before-arrival');
+      if (firstNotificationSelect && service.first_notification_before_arrival) {
+        firstNotificationSelect.value = service.first_notification_before_arrival;
+      } else if (firstNotificationSelect) {
+        firstNotificationSelect.value = '60';
+      }
+      
+      // Configurar idioma predefinido
+      const defaultLanguageSelect = document.getElementById('self-in-default-language');
+      if (defaultLanguageSelect && service.self_in_default_language) {
+        defaultLanguageSelect.value = service.self_in_default_language;
+      } else if (defaultLanguageSelect) {
+        defaultLanguageSelect.value = 'en';
       }
       
       // Cargar configuración de campos si existe

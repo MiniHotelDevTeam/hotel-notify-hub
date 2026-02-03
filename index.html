@@ -9,7 +9,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/language-selector.css">
+    <link rel="stylesheet" href="styles/language-selector.css"> 
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -556,6 +556,27 @@
                             title="URL donde se redirigirá al usuario después del check-in automático"
                         >
                         <small class="form-help" data-i18n="addService.selfInUrlHelp">URL de destino para la redirección después del check-in automático</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first-notification-before-arrival" data-i18n="addService.firstNotificationBeforeArrival">📬 Enviar primera notificación</label>
+                        <select id="first-notification-before-arrival" name="first_notification_before_arrival" class="form-control">
+                            <option value="60" data-i18n="addService.firstNotification2Months">2 meses antes de la llegada</option>
+                            <option value="30" data-i18n="addService.firstNotification1Month">1 mes antes de la llegada</option>
+                            <option value="14" data-i18n="addService.firstNotification2Weeks">2 semanas antes de la llegada</option>
+                            <option value="7" data-i18n="addService.firstNotification1Week">1 semana antes de la llegada</option>
+                        </select>
+                        <small class="form-help" data-i18n="addService.firstNotificationHelp">La primera notificación se enviará en este plazo antes del día de llegada, no al crear la reserva. Útil para reservas futuras (ej. un año).</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="self-in-default-language" data-i18n="addService.selfInDefaultLanguage">🌐 Idioma Predefinido</label>
+                        <select id="self-in-default-language" name="self_in_default_language" class="form-control">
+                            <option value="es">Español</option>
+                            <option value="en">English</option>
+                            <option value="pt">Português</option>
+                        </select>
+                        <small class="form-help" data-i18n="addService.selfInDefaultLanguageHelp">Idioma que se usará cuando una reserva no tenga el dato del país-idioma. El mensaje se enviará en este idioma por defecto.</small>
                     </div>
 
                     <!-- Información de Campos del Formulario -->
