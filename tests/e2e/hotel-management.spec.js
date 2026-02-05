@@ -19,7 +19,7 @@ test.describe('Hotel Management System E2E Tests', () => {
       console.log('Login required, performing authentication...');
       
       // Fill password
-      await passwordInput.fill('admin12345');
+      await passwordInput.fill('alpaca1234');
       
       // Click login button
       await loginButton.click();
@@ -46,7 +46,7 @@ test.describe('Hotel Management System E2E Tests', () => {
     
     if (await passwordInput.isVisible({ timeout: 2000 }).catch(() => false)) {
       // Fill password
-      await passwordInput.fill('admin12345');
+      await passwordInput.fill('alpaca1234');
       
       // Click login button (be more specific)
       const loginButton = page.locator('button:has-text("Iniciar Sesión"), .login-button, button.login-button');

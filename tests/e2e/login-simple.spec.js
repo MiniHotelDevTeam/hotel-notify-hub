@@ -19,7 +19,7 @@ test.describe('Hotel Management Login Tests', () => {
       console.log('Password input found, proceeding with login...');
       
       // Fill the password
-      await passwordInput.fill('admin12345');
+      await passwordInput.fill('alpaca1234');
       
       // Find and click the login button - be very specific
       const loginButton = await page.locator('button').filter({ hasText: 'Iniciar Sesión' }).first();
@@ -125,7 +125,7 @@ test.describe('Hotel Management Login Tests', () => {
     const passwordInput = page.locator('input[type="password"]').first();
     
     if (await passwordInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await passwordInput.fill('admin12345');
+      await passwordInput.fill('alpaca1234');
       
       const loginButton = page.locator('button').filter({ hasText: 'Iniciar Sesión' }).first();
       await loginButton.click();
