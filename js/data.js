@@ -209,6 +209,7 @@ const WEBHOOK_BASE_URL = 'https://automate.golobby.ai/webhook/8486e672-cf9e-4fd6
 
 function buildWebhookUrl(params) {
   const url = new URL(WEBHOOK_BASE_URL);
+
   Object.entries(params || {}).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
       // Mantener valores booleanos como booleanos, convertir otros a string
@@ -227,8 +228,19 @@ async function fetchWebhook(params) {
   const url = buildWebhookUrl(params);
   console.log('fetchWebhook - Parámetros:', params);
   console.log('fetchWebhook - URL generada:', url);
+
+  const token = localStorage.getItem('hotel_notify_session_key');
   
-  const response = await fetch(url, { method: 'GET' });
+  const headers = {
+      'Content-Type': 'application/json'
+  };
+
+  // Inject token if available
+  if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  const response = await fetch(url, { method: 'GET', headers });
   console.log('fetchWebhook - Response status:', response.status, response.statusText);
   
   if (!response.ok) {

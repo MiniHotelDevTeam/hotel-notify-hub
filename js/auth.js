@@ -102,9 +102,7 @@ async function handleLogin(e) {
       }
       
       // Mostrar mensaje de éxito con información del cliente
-      const clientInfo = response.client_info;
-      const country = clientInfo?.country ? ` (${clientInfo.country})` : '';
-      const successMsg = window.i18n ? window.i18n.t('login.success', {country}) : `Sesión iniciada correctamente${country}`;
+      const successMsg = window.i18n ? window.i18n.t('login.success') : 'Sesión iniciada correctamente';
       showToast(successMsg, 'success');
       
       // Mostrar la aplicación
