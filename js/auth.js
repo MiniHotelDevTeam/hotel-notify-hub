@@ -185,43 +185,6 @@ function addSessionKeyToWebhook(params) {
   return params;
 }
 
-// Función para verificar la sesión con el servidor
-async function verifySession() {
-  if (!sessionKey) return false;
-  
-  // Verificar expiración local primero
-  const expiresAt = localStorage.getItem('hotel_notify_session_expires');
-  if (expiresAt) {
-    const expirationDate = new Date(expiresAt);
-    if (new Date() > expirationDate) {
-      console.log('Sesión expirada localmente');
-      logout();
-      return false;
-    }
-  }
-  
-  try {
-    const response = await fetchWebhook({
-      func: 'auth',
-      method: 'verify',
-      session_key: sessionKey
-    });
-    
-    if (response && response.success) {
-      return true;
-    } else {
-      // Sesión inválida, cerrar sesión
-      console.log('Sesión inválida en servidor:', response?.message);
-      logout();
-      return false;
-    }
-  } catch (error) {
-    console.error('Error verificando sesión:', error);
-    logout();
-    return false;
-  }
-}
-
 // Función para agregar botón de logout al sidebar
 function addLogoutButton() {
   const sidebar = document.getElementById('sidebar');
@@ -419,4 +382,4 @@ window.initializeAuth = initializeAuth;
 window.logout = logout;
 window.getSessionKey = getSessionKey;
 window.isUserAuthenticated = isUserAuthenticated;
-window.verifySession = verifySession;
+
