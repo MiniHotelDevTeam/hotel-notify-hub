@@ -40,7 +40,7 @@ function initializeApp() {
   
   
   // Verificar sesión periódicamente (cada 5 minutos)
-  setInterval(verifySession, 300000);
+  // setInterval(verifySession, 300000);
 }
 
 function setupNavigation() {
