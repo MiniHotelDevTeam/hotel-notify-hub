@@ -231,9 +231,7 @@ async function fetchWebhook(params) {
 
   const token = localStorage.getItem('hotel_notify_session_key');
   
-  const headers = {
-      'Content-Type': 'application/json'
-  };
+  const headers = { 'Content-Type': 'application/json' };
 
   // Inject token if available
   if (token) {
@@ -242,11 +240,23 @@ async function fetchWebhook(params) {
   
   const response = await fetch(url, { method: 'GET', headers });
   console.log('fetchWebhook - Response status:', response.status, response.statusText);
+
+  let payload = null;
+  try {
+    payload = await response.json();    
+  } catch (e) {
+    console.warn('No se pudo parsear el JSON de respuesta o estaba vacío');
+  }
+
+  if (response.status === 401 || (payload && (payload.error === 'UNAUTHORIZED' || payload.code === 401))) {
+    logout();
+    return null; // Detener ejecución
+  }
   
   if (!response.ok) {
     throw new Error(`Webhook HTTP ${response.status}`);
   }
-  let payload = await response.json();
+
   console.log('fetchWebhook - Payload recibido:', payload);
   
   // Para países, extraer el array de datos
