@@ -210,7 +210,12 @@ const i18n = {
       'hotelServices.errorLoading': 'Error al cargar los servicios',
       'hotelServices.tryAgain': 'Intentar nuevamente',
       'hotelServices.servicesOf': 'Servicios de',
-      
+      'evolution.connectionHeader': 'Estado de conexión WhatsApp',
+      'evolution.connected': 'Conectado',
+      'evolution.connecting': 'Conectando...',
+      'evolution.disconnected': 'Desconectado',
+      'evolution.noInstance': 'Sin instancia',
+
       // Add Service Modal
       'addService.title': 'Agregar Servicio',
       'addService.service': 'Servicio',
@@ -605,7 +610,12 @@ const i18n = {
       'hotelServices.errorLoading': 'Error loading services',
       'hotelServices.tryAgain': 'Try again',
       'hotelServices.servicesOf': 'Services for',
-      
+      'evolution.connectionHeader': 'WhatsApp Connection Status',
+      'evolution.connected': 'Connected',
+      'evolution.connecting': 'Connecting...',
+      'evolution.disconnected': 'Disconnected',
+      'evolution.noInstance': 'No instance',
+
       // Add Service Modal
       'addService.title': 'Add Service',
       'addService.service': 'Service',
@@ -1000,7 +1010,12 @@ const i18n = {
       'hotelServices.errorLoading': 'Erro ao carregar os serviços',
       'hotelServices.tryAgain': 'Tentar novamente',
       'hotelServices.servicesOf': 'Serviços de',
-      
+      'evolution.connectionHeader': 'Status de Conexão WhatsApp',
+      'evolution.connected': 'Conectado',
+      'evolution.connecting': 'Conectando...',
+      'evolution.disconnected': 'Desconectado',
+      'evolution.noInstance': 'Sem instância',
+
       // Add Service Modal
       'addService.title': 'Adicionar Serviço',
       'addService.service': 'Serviço',

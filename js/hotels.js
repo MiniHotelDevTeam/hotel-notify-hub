@@ -774,6 +774,54 @@ async function deleteHotel(id) {
   }
 }
 
+async function fetchEvolutionConnectionState(hotelCode) {
+  try {
+    const response = await fetch(`https://evolution.golobby.ai/instance/connectionState/${hotelCode}`, {
+      headers: { 'apikey': '429683C4C977415CAAFCCE10F7D57E11' }
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      const message = data?.response?.message?.[0] || data?.error || 'Error desconocido';
+      return { ok: false, error: message, status: data?.status };
+    }
+    return { ok: true, state: data.instance?.state, instanceName: data.instance?.instanceName };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
+}
+
+function renderEvolutionPanel(evolutionState) {
+  if (!evolutionState) return '';
+
+  let badgeClass, icon, label;
+
+  const t = (key, fallback) => window.i18n ? window.i18n.t(key) : fallback;
+
+  if (!evolutionState.ok) {
+    badgeClass = 'evolution-unknown';
+    icon = '❓';
+    label = evolutionState.error || t('evolution.noInstance', 'Sin instancia');
+  } else {
+    const state = evolutionState.state;
+    if (state === 'open' || state === 'connecting') {
+      badgeClass = 'evolution-open';
+      icon = '🟢';
+      label = t('evolution.connected', 'Conectado');
+    } else {
+      badgeClass = 'evolution-closed';
+      icon = '🔴';
+      label = `${t('evolution.disconnected', 'Desconectado')}${state ? ` (${state})` : ''}`;
+    }
+  }
+
+  return `
+    <div class="evolution-connection-panel">
+      <div class="evolution-panel-header">📡 ${t('evolution.connectionHeader', 'Estado de conexión WhatsApp')}</div>
+      <span class="evolution-state-badge ${badgeClass}">${icon} ${label}</span>
+    </div>
+  `;
+}
+
 async function viewHotelServices(id) {
   const hotel = hotelsCache.find(h => h.id === id);
   if (!hotel) return;
@@ -844,10 +892,16 @@ async function viewHotelServices(id) {
         </div>
       `;
       
+      // Pre-fetch evolution state if SELF_IN is active
+      let evolutionConnectionState = null;
+      if (services.find(s => s.service_code === 'SELF_IN')) {
+        evolutionConnectionState = await fetchEvolutionConnectionState(hotelData.data.hotel_code);
+      }
+
       // Renderizar lista de servicios mejorada
       const servicesList = document.createElement('div');
       servicesList.className = 'hotel-services-list';
-      
+
       services.forEach(service => {
         const serviceItem = document.createElement('div');
         serviceItem.className = 'service-item';
@@ -890,6 +944,7 @@ async function viewHotelServices(id) {
                       </span>
                     </div>
                   ` : ''}
+                  ${renderEvolutionPanel(evolutionConnectionState)}
                 </div>
               ` : ''}
             </div>
