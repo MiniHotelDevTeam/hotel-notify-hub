@@ -797,10 +797,13 @@ function renderEvolutionPanel(evolutionState) {
 
   const t = (key, fallback) => window.i18n ? window.i18n.t(key) : fallback;
 
+  let needsReconnect = false;
+
   if (!evolutionState.ok) {
     badgeClass = 'status-in-unknown';
     icon = '❓';
     label = evolutionState.error || t('evolution.noInstance', 'Sin instancia');
+    needsReconnect = true;
   } else {
     const state = evolutionState.state;
     if (state === 'open' || state === 'connecting') {
@@ -811,13 +814,21 @@ function renderEvolutionPanel(evolutionState) {
       badgeClass = 'status-in-inactive';
       icon = '❌';
       label = `${t('evolution.disconnected', 'Desconectado')}${state ? ` (${state})` : ''}`;
+      needsReconnect = true;
     }
   }
 
   return `
     <div class="evolution-connection-panel">
       <div class="evolution-panel-header">${t('evolution.connectionHeader', 'Estado de conexión WhatsApp (Evolution API)')}</div>
-      <span class="status-in-badge ${badgeClass}">${icon} ${label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+        <span class="status-in-badge ${badgeClass}">${icon} ${label}</span>
+        ${needsReconnect ? `
+          <a href="https://lobby-link-form-psi.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">
+            🔗 ${t('evolution.reconnect', 'Reconectar')}
+          </a>
+        ` : ''}
+      </div>
     </div>
   `;
 }

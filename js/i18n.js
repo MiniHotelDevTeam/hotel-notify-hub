@@ -215,6 +215,7 @@ const i18n = {
       'evolution.connecting': 'Conectando...',
       'evolution.disconnected': 'Desconectado',
       'evolution.noInstance': 'Sin instancia',
+      'evolution.reconnect': 'Reconectar',
 
       // Add Service Modal
       'addService.title': 'Agregar Servicio',
@@ -615,6 +616,7 @@ const i18n = {
       'evolution.connecting': 'Connecting...',
       'evolution.disconnected': 'Disconnected',
       'evolution.noInstance': 'No instance',
+      'evolution.reconnect': 'Reconnect',
 
       // Add Service Modal
       'addService.title': 'Add Service',
@@ -1015,6 +1017,7 @@ const i18n = {
       'evolution.connecting': 'Conectando...',
       'evolution.disconnected': 'Desconectado',
       'evolution.noInstance': 'Sem instância',
+      'evolution.reconnect': 'Reconectar',
 
       // Add Service Modal
       'addService.title': 'Adicionar Serviço',
