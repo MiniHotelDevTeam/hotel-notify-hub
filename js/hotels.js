@@ -798,26 +798,26 @@ function renderEvolutionPanel(evolutionState) {
   const t = (key, fallback) => window.i18n ? window.i18n.t(key) : fallback;
 
   if (!evolutionState.ok) {
-    badgeClass = 'evolution-unknown';
+    badgeClass = 'status-in-unknown';
     icon = '❓';
     label = evolutionState.error || t('evolution.noInstance', 'Sin instancia');
   } else {
     const state = evolutionState.state;
     if (state === 'open' || state === 'connecting') {
-      badgeClass = 'evolution-open';
-      icon = '🟢';
+      badgeClass = 'status-in-active';
+      icon = '✅';
       label = t('evolution.connected', 'Conectado');
     } else {
-      badgeClass = 'evolution-closed';
-      icon = '🔴';
+      badgeClass = 'status-in-inactive';
+      icon = '❌';
       label = `${t('evolution.disconnected', 'Desconectado')}${state ? ` (${state})` : ''}`;
     }
   }
 
   return `
     <div class="evolution-connection-panel">
-      <div class="evolution-panel-header">📡 ${t('evolution.connectionHeader', 'Estado de conexión WhatsApp')}</div>
-      <span class="evolution-state-badge ${badgeClass}">${icon} ${label}</span>
+      <div class="evolution-panel-header">${t('evolution.connectionHeader', 'Estado de conexión WhatsApp (Evolution API)')}</div>
+      <span class="status-in-badge ${badgeClass}">${icon} ${label}</span>
     </div>
   `;
 }
